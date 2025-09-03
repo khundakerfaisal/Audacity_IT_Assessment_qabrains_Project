@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    implementation("org.seleniumhq.selenium:selenium-java:4.16.1")
+    // https://mvnrepository.com/artifact/org.testng/testng
+    testImplementation("org.testng:testng:7.11.0")
+
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-csv
+    implementation("org.apache.commons:commons-csv:1.14.1")
+    // https://mvnrepository.com/artifact/com.aventstack/extentreports
+    implementation("com.aventstack:extentreports:5.1.0")
+
+}
+test {
+    useTestNG()
+}
+//    useTestNG() {
+//        if (project.hasProperty("username") && project.hasProperty("password")) {
+//            systemProperties.put("username", project.property("username"))
+//            systemProperties.put("password", project.property("password"))
+//        }
+//        if (project.hasProperty("suiteName")) {
+//            systemProperties.put("suiteName", project.property("suiteName"))
+//        }
+//        suites "./src/test/resources/"+systemProperties.get("suiteName")
+//
+//    }
+//}
