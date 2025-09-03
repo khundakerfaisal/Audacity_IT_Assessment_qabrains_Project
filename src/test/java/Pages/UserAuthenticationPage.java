@@ -41,9 +41,7 @@ public class UserAuthenticationPage {
 //        test.pass("Login button Press Successfully");
 //        Utils.getScreenShot(driver,"Login button Press Successfully");
         Thread.sleep(2000);
-        registrationMenu.click();
-        Thread.sleep(2000);
-        forgetPasswordMenu.click();
+
     }
     public void navigateToRegistration(){
         registrationMenu.click();

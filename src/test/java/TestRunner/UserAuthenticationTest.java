@@ -36,6 +36,25 @@ public class UserAuthenticationTest extends BasePage {
         Assert.assertEquals(actualText, expectedText);
         Thread.sleep(1000);
     }
+    @Test(priority = 3,description = "Navigate to Registration Menu")
+    public void registrationMenu() throws InterruptedException, IOException {
+        driver.get("https://practice.qabrains.com/");
+//        test=extent.createTest("Login Functionalities check");
+//        test= test.createNode("Login Screen found successfully");
+        UserAuthenticationPage loginPages=new UserAuthenticationPage(driver);
+        loginPages.navigateToRegistration();
+        Thread.sleep(1000);
+    }
+    @Test(priority = 4,description = "Navigate to Forget Password Menu")
+    public void forgetPasswordMenu() throws InterruptedException, IOException {
+        driver.get("https://practice.qabrains.com/");
+//        test=extent.createTest("Login Functionalities check");
+//        test= test.createNode("Login Screen found successfully");
+        UserAuthenticationPage loginPages=new UserAuthenticationPage(driver);
+        loginPages.navigateToForgotPassword();
+        Thread.sleep(1000);
+    }
+
 
 
 }
