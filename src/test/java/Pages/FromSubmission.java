@@ -14,8 +14,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class FromSubmission {
-    WebDriver driver;
+  WebDriver driver;
     ExtentTest test;
+    ExtentTest node;
 
 
     @FindBy(name = "name")
@@ -39,45 +40,46 @@ public class FromSubmission {
     WebElement countryDropdown;
     @FindBy(css = "button[type='submit']")
     WebElement submitBtn;
-    public FromSubmission(WebDriver driver, ExtentTest test) {
+    public FromSubmission(WebDriver driver, ExtentTest node) {
         this.driver = driver;
-        this.test = test;
+
         PageFactory.initElements(driver, this);
+        this.node = node;
     }
 
     public void enterName(String name) throws IOException {
         nameInput.sendKeys(name);
-        test.info("Name column found as expected");
-        Utility.getScreenShot(driver, "Enter Name Successfully");
+        node.info("Name column found as expected");
+        Utility.getScreenShot(driver, "Enter Name Successfully",node);
 
     }
     public void enterInvalidName(String name) throws IOException {
         nameInput.sendKeys(name);
-        test.info("Input invalid name");
-        Utility.getScreenShot(driver, "invalid name");
+        node.info("Input invalid name");
+        Utility.getScreenShot(driver, "invalid name",node);
 
     }
 
     public void enterEmail(String email) throws IOException {
         emailInput.sendKeys(email);
-        test.info("Email column found as expected");
-        Utility.getScreenShot(driver, "Enter Email Successfully");
+        node.info("Email column found as expected");
+        Utility.getScreenShot(driver, "Enter Email Successfully",node);
     }
     public void enterInvalidEmail(String email) throws IOException {
         emailInput.sendKeys(email);
-        test.info("Input invalid Email");
-        Utility.getScreenShot(driver, "invalid  Email ");
+        node.info("Input invalid Email");
+        Utility.getScreenShot(driver, "invalid  Email ",node);
     }
 
     public void enterPhone(String phone) throws IOException {
         phoneInput.sendKeys(phone);
-        test.info("Phone column found as expected");
-        Utility.getScreenShot(driver, "Enter Phone Number Successfully");
+        node.info("Phone column found as expected");
+        Utility.getScreenShot(driver, "Enter Phone Number Successfully",node);
     }
     public void enterInvalidPhone(String phone) throws IOException {
         phoneInput.sendKeys(phone);
-        test.info("input Invalid Phone");
-        Utility.getScreenShot(driver, "Invalid contact");
+        node.info("input Invalid Phone");
+        Utility.getScreenShot(driver, "Invalid contact",node);
     }
 
     public void uploadFile() throws IOException, InterruptedException {
@@ -95,39 +97,39 @@ public class FromSubmission {
         String uploadedFileName = fileUpload.getAttribute("value");
         Assert.assertTrue(uploadedFileName.contains("chaldal.pdf"), "File upload failed!");
 
-        test.pass("File uploaded successfully: " + file.getName());
-        Utility.getScreenShot(driver, "File_Upload_Successfully");
+        node.pass("File uploaded successfully: " + file.getName());
+        Utility.getScreenShot(driver, "File_Upload_Successfully",node);
     }
     public void radioBoxColor() throws IOException {
         if (!radioBoxSelect.isSelected()) {
             radioBoxSelect.click();
-            test.pass("Radio button selected successfully");
+            node.pass("Radio button selected successfully");
         } else {
-            test.pass("Radio button was already selected");
+            node.pass("Radio button was already selected");
         }
 
-        Utility.getScreenShot(driver, "RadioButton_Selection_Successfully");
+        Utility.getScreenShot(driver, "RadioButton_Selection_Successfully",node);
     }
     public void clickPastaCheckbox() throws IOException {
         if(!pastaCheckbox.isSelected()) {
             pastaCheckbox.click();
-            test.pass("Pasta checkbox clicked successfully");
-            Utility.getScreenShot(driver, "checkbox Submission Successfully");
+            node.pass("Pasta checkbox clicked successfully");
+            Utility.getScreenShot(driver, "checkbox Submission Successfully",node);
         } else {
-            test.info("Pasta checkbox was already selected");
+            node.info("Pasta checkbox was already selected");
         }
     }
     public void selectCountry() throws IOException {
         Select select = new Select(countryDropdown);
         select.selectByVisibleText("Bangladesh");
-        test.pass("Country selected: ");
-        Utility.getScreenShot(driver, "country Submission Successfully");
+        node.pass("Country selected: ");
+        Utility.getScreenShot(driver, "country Submission Successfully",node);
     }
 
     public void clickSubmit() throws IOException {
         submitBtn.click();
-        test.pass("Submit button found and clicked successfully");
-        Utility.getScreenShot(driver, "From Submission Successfully");
+        node.pass("Submit button found and clicked successfully");
+        Utility.getScreenShot(driver, "From Submission Successfully",node);
     }
 
     public boolean isFieldDisplayed() {

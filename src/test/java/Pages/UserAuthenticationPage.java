@@ -1,6 +1,7 @@
 package Pages;
 
 import Utility.Utility;
+import com.aventstack.extentreports.ExtentTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,6 +19,7 @@ import static Config.BasePage.test;
 
 public class UserAuthenticationPage {
     WebDriver driver;
+    ExtentTest node;
     @FindBy(name = "email")
     WebElement txtInputEmail;
     @FindBy(name = "password")
@@ -35,39 +37,41 @@ public class UserAuthenticationPage {
     WebElement inputFeedback;
     @FindBy(xpath = "//button[text()='Submit']")
     WebElement feedbackSubmitButton;
-    public UserAuthenticationPage(WebDriver driver) {
+    public UserAuthenticationPage(WebDriver driver, ExtentTest node) {
 
         this.driver = driver;
+        this.node=node;
         PageFactory.initElements(driver, this);
+
     }
 
     public void qaBrainLoginPage(String email, String password) throws InterruptedException, IOException {
 
         txtInputEmail.sendKeys(email);
-        test.info("Email column found as expected");
-        Utility.getScreenShot(driver, "Email input Successfully");
+        node.info("Email column found as expected");
+        Utility.getScreenShot(driver, "Email input Successfully",node);
         Thread.sleep(1000);
         txtInputPassword.sendKeys(password);
-        test.info("Password column found as expected");
-        Utility.getScreenShot(driver, "Password input successfully");
+        node.info("Password column found as expected");
+        Utility.getScreenShot(driver, "Password input successfully",node);
         Thread.sleep(1000);
         loginButton.click();
-        test.pass("Login button found as expected");
-        Utility.getScreenShot(driver, "Login Successfully");
+        node.pass("Login button found as expected");
+        Utility.getScreenShot(driver, "Login Successfully",node);
         Thread.sleep(2000);
 
     }
 
     public void navigateToRegistration() throws IOException {
         registrationMenu.click();
-        test.info("Registration menu found as expected");
-        Utility.getScreenShot(driver, "Navigate to the Registration Menu Successfully");
+        node.info("Registration menu found as expected");
+        Utility.getScreenShot(driver, "Navigate to the Registration Menu Successfully",node);
     }
 
     public void navigateToForgotPassword() throws IOException {
         forgetPasswordMenu.click();
-        test.info("Forget Password menu found as expected");
-        Utility.getScreenShot(driver, "Navigate to the Forget Password Menu Successfully");
+        node.info("Forget Password menu found as expected");
+        Utility.getScreenShot(driver, "Navigate to the Forget Password Menu Successfully",node);
     }
 
     public void inputFeedback() throws IOException, InterruptedException {
@@ -97,8 +101,8 @@ public class UserAuthenticationPage {
         Thread.sleep(2000);
         feedbackSubmitButton.click();
         Thread.sleep(2000);
-        test.info("Feedback submit button found as expected");
-        Utility.getScreenShot(driver, "Feedback submit Successfully");
+        node.info("Feedback submit button found as expected");
+        Utility.getScreenShot(driver, "Feedback submit Successfully",node);
     }
 
     public boolean isPasswordMasked() {

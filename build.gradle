@@ -14,25 +14,16 @@ dependencies {
     implementation("org.seleniumhq.selenium:selenium-java:4.16.1")
     // https://mvnrepository.com/artifact/org.testng/testng
     testImplementation("org.testng:testng:7.11.0")
-
     // https://mvnrepository.com/artifact/org.apache.commons/commons-csv
     implementation("org.apache.commons:commons-csv:1.14.1")
     // https://mvnrepository.com/artifact/com.aventstack/extentreports
     implementation("com.aventstack:extentreports:5.1.0")
+//    // https://mvnrepository.com/artifact/com.aventstack/extentreports
+//    implementation("com.aventstack:extentreports:5.0.9")
 
 }
 test {
-    useTestNG()
+    useTestNG(){
+        suites "./src/test/resources/regressionSuite.xml";
+    }
 }
-//    useTestNG() {
-//        if (project.hasProperty("username") && project.hasProperty("password")) {
-//            systemProperties.put("username", project.property("username"))
-//            systemProperties.put("password", project.property("password"))
-//        }
-//        if (project.hasProperty("suiteName")) {
-//            systemProperties.put("suiteName", project.property("suiteName"))
-//        }
-//        suites "./src/test/resources/"+systemProperties.get("suiteName")
-//
-//    }
-//}

@@ -4,6 +4,7 @@ package TestRunner;
 import Config.BasePage;
 import Pages.FromSubmission;
 import Utility.Utility;
+import com.aventstack.extentreports.ExtentTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -21,8 +22,9 @@ public class FromSubmissionTest extends BasePage {
     public void testFillRequiredFields() throws IOException, InterruptedException {
         driver.get("https://practice.qabrains.com/form-submission");
         test=extent.createTest("From Submission");
-        test= test.createNode("From Submission successfully With Valid input");
-        FromSubmission fromSubmission = new FromSubmission(driver, test);
+        ExtentTest node= test.createNode("From Submission successfully With Valid input");
+
+        FromSubmission fromSubmission = new FromSubmission(driver, node);
 
         fromSubmission.enterName("QA Brain");
         fromSubmission.enterEmail("qa@test.com");
@@ -45,15 +47,15 @@ public class FromSubmissionTest extends BasePage {
         String actualText = driver.findElement(By.cssSelector("div.toaster span.title")).getText();
         Assert.assertEquals(actualText, expectedText);
         Thread.sleep(1000);
-        test.pass("All required fields located and filled successfully");
+        node.pass("All required fields located and filled successfully");
     }
 
     @Test(priority = 2,description = "Form Validation  Missing/Invalid Data ")
     public void testFillRequiredFieldsWithInvalidData() throws IOException, InterruptedException {
         driver.get("https://practice.qabrains.com/form-submission");
-        test = test.createNode("Locate and Fill Required Fields with Invalid Data");
+        ExtentTest node = test.createNode("Locate and Fill Required Fields with Invalid Data");
 
-        FromSubmission fromSubmission = new FromSubmission(driver, test);
+        FromSubmission fromSubmission = new FromSubmission(driver, node);
 
         // Enter invalid/missing data
         fromSubmission.enterInvalidName("");   // empty name
@@ -88,23 +90,22 @@ public class FromSubmissionTest extends BasePage {
                 "Name is a required field",
                 "Email is a required field",
                 "Only numbers are allowed",
-//                "Contact is a required field",
                 "Upload File is a required field"
         );
 
         // Assert all
         Assert.assertEquals(actualErrors, expectedErrors, "Validation messages did not match!");
 
-        test.pass("Invalid data correctly triggered validation errors: " + actualErrors);
+        node.pass("Invalid data correctly triggered validation errors: " + actualErrors);
     }
 
     @Test(priority = 3,description = "Accessibility and Labels Test Successfully")
     public void testAccessibilityOfFieldsAndLabels() {
         driver.get("https://practice.qabrains.com/form-submission");
-        test = test.createNode("Accessibility and Labels Test");
-        FromSubmission fromSubmission = new FromSubmission(driver, test);
+        ExtentTest node = test.createNode("Accessibility and Labels Test");
+        FromSubmission fromSubmission = new FromSubmission(driver, node);
         Assert.assertTrue(fromSubmission.isFieldDisplayed());
-        test.pass("All form fields are accessible");
+        node.pass("All form fields are accessible");
 
     }
 }
