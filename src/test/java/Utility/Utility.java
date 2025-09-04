@@ -45,6 +45,6 @@ public class Utility {
     }
     public static void scrollBy(WebDriver driver) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0,50)");
+        js.executeScript("window.scrollBy(0,300)");
     }
 }

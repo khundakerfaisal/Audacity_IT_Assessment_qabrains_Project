@@ -3,76 +3,107 @@ package TestRunner;
 
 import Config.BasePage;
 import Pages.FromSubmission;
+import Utility.Utility;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 
 public class FromSubmissionTest extends BasePage {
     @Test(priority = 1,description = "Locate and Fill All Required Fields")
-    public void testFillRequiredFields() throws IOException {
+    public void testFillRequiredFields() throws IOException, InterruptedException {
         driver.get("https://practice.qabrains.com/form-submission");
-        test = extent.createTest("Locate and Fill Required Fields");
+        test=extent.createTest("From Submission");
+        test= test.createNode("From Submission successfully With Valid input");
         FromSubmission fromSubmission = new FromSubmission(driver, test);
 
         fromSubmission.enterName("QA Brain");
         fromSubmission.enterEmail("qa@test.com");
-        fromSubmission.enterPhone("1234567890");
-//        fromSubmission.enterMessage("Hello QA Brains");
-
+        fromSubmission.enterPhone("01234567890");
+        Utility.scrollBy(driver);
+        Thread.sleep(2000);
+        fromSubmission.uploadFile();
+        Thread.sleep(4000);
+        fromSubmission.radioBoxColor();
+        Thread.sleep(2000);
+        Utility.scrollBy(driver);
+        Thread.sleep(2000);
+        fromSubmission.clickPastaCheckbox();
+        Thread.sleep(2000);
+        fromSubmission.selectCountry();
+        Thread.sleep(2000);
+        fromSubmission.clickSubmit();
+        Thread.sleep(2000);
+        String expectedText = "Form submit successfully.";
+        String actualText = driver.findElement(By.cssSelector("div.toaster span.title")).getText();
+        Assert.assertEquals(actualText, expectedText);
+        Thread.sleep(1000);
         test.pass("All required fields located and filled successfully");
     }
 
-    @Test(priority = 2,description = "From Submit Successfully")
-    public void testSubmitAndAssertSuccessMessage() throws IOException {
+    @Test(priority = 2,description = "Form Validation  Missing/Invalid Data ")
+    public void testFillRequiredFieldsWithInvalidData() throws IOException, InterruptedException {
         driver.get("https://practice.qabrains.com/form-submission");
-        test = extent.createTest("Submit Form and Assert Success Message");
+        test = test.createNode("Locate and Fill Required Fields with Invalid Data");
+
         FromSubmission fromSubmission = new FromSubmission(driver, test);
 
-        fromSubmission.enterName("QA Brain");
-        fromSubmission.enterEmail("qa@test.com");
-        fromSubmission.enterPhone("1234567890");
-//        fromSubmission.enterMessage("Hello QA Brains");
+        // Enter invalid/missing data
+        fromSubmission.enterInvalidName("");   // empty name
+        fromSubmission.enterInvalidEmail("");  // empty email
+        fromSubmission.enterInvalidPhone("12ab"); // invalid phone
+        Thread.sleep(4000);
+        Utility.scrollBy(driver);
+        Thread.sleep(2000);
+        fromSubmission.radioBoxColor();
+        Thread.sleep(2000);
+        Utility.scrollBy(driver);
+        Thread.sleep(2000);
+        fromSubmission.clickPastaCheckbox();
+        Thread.sleep(2000);
+        fromSubmission.selectCountry();
+        Thread.sleep(2000);
         fromSubmission.clickSubmit();
+        Thread.sleep(2000);
+        // Wait for validation errors
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        List<WebElement> errorMessages = wait.until(
+                ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("p.text-red-500"))
+        );
 
-        Assert.assertTrue(fromSubmission.getSuccessMessage().contains("successfully"),
-                "Success message not displayed as expected!");
-        test.pass("Form submitted successfully and success message verified");
+        // Collect texts
+        List<String> actualErrors = errorMessages.stream()
+                .map(WebElement::getText)
+                .toList();
+
+        // Expected errors
+        List<String> expectedErrors = Arrays.asList(
+                "Name is a required field",
+                "Email is a required field",
+                "Only numbers are allowed",
+//                "Contact is a required field",
+                "Upload File is a required field"
+        );
+
+        // Assert all
+        Assert.assertEquals(actualErrors, expectedErrors, "Validation messages did not match!");
+
+        test.pass("Invalid data correctly triggered validation errors: " + actualErrors);
     }
 
-    @Test(priority = 3,description = "Form Validation Successfully with Missing/Invalid Data ")
-    public void testFormValidationWithInvalidData() throws IOException {
-        driver.get("https://practice.qabrains.com/form-submission");
-        test = extent.createTest("Form Validation with Missing/Invalid Data");
-        FromSubmission fromSubmission = new FromSubmission(driver, test);
-
-        // Case 1: Missing name
-        fromSubmission.enterEmail("qa@test.com");
-        fromSubmission.enterPhone("1234567890");
-//        fromSubmission.enterMessage("Missing Name Field");
-        fromSubmission.clickSubmit();
-
-        Assert.assertTrue(fromSubmission.getErrorMessage().contains("required"),
-                "Error message not displayed for missing data!");
-        test.pass("Validation error verified for missing name");
-
-        // Case 2: Invalid email
-        fromSubmission.enterName("QA Brain");
-        fromSubmission.enterEmail("invalidEmail");
-        fromSubmission.enterPhone("1234567890");
-//        fromSubmission.enterMessage("Invalid email test");
-        fromSubmission.clickSubmit();
-        Assert.assertTrue(fromSubmission.getErrorMessage().contains("valid email"),
-                "Error message not displayed for invalid email!");
-        test.pass("Validation error verified for invalid email");
-    }
-
-    @Test(priority = 4,description = "Accessibility and Labels Test Successfully")
+    @Test(priority = 3,description = "Accessibility and Labels Test Successfully")
     public void testAccessibilityOfFieldsAndLabels() {
         driver.get("https://practice.qabrains.com/form-submission");
-        test = extent.createTest("Accessibility and Labels Test");
+        test = test.createNode("Accessibility and Labels Test");
         FromSubmission fromSubmission = new FromSubmission(driver, test);
-        Assert.assertTrue(fromSubmission.isFieldDisplayed(), "Some fields are not accessible!");
+        Assert.assertTrue(fromSubmission.isFieldDisplayed());
         test.pass("All form fields are accessible");
 
     }
