@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 
 import static Config.BasePage.test;
 
@@ -71,19 +72,18 @@ public class UserAuthenticationPage {
 
     public void inputFeedback() throws IOException, InterruptedException {
         inputFeedback.sendKeys("Test QA Brain");
-        test.info("Feedback column found as expected");
-        Utility.getScreenShot(driver, "Feedback input Successfully");
         feedbackSubmitButton.click();
         WebDriverWait wait =new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement dialogBox = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@role='dialog']"))
         );
-        WebElement signUpBtn = dialogBox.findElement(By.xpath(".//button[text()='Sign Up']"));
-        signUpBtn.click();
+        WebElement signInBtn = dialogBox.findElement(By.xpath("//button[text()='Sign In']"));
+        signInBtn.click();
         Thread.sleep(2000);
-        driver.switchTo().newWindow(WindowType.TAB);
-        Thread.sleep(2000);
-        driver.get("https://qabrains.com/auth/login");
+
+        String parentTab = driver.getWindowHandle();
+        ArrayList<String> allTab=new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(allTab.get(1));
         Thread.sleep(2000);
         txtInputEmail.sendKeys("qa.brain@yopmail.com");
         Thread.sleep(2000);
@@ -93,9 +93,8 @@ public class UserAuthenticationPage {
         Thread.sleep(2000);
         driver.close();
         Thread.sleep(2000);
-        inputFeedback.sendKeys("Test QA Brain");
-        test.info("Feedback column found as expected");
-        Utility.getScreenShot(driver, "Feedback input Successfully");
+        driver.switchTo().window(parentTab);
+        Thread.sleep(2000);
         feedbackSubmitButton.click();
         Thread.sleep(2000);
         test.info("Feedback submit button found as expected");
