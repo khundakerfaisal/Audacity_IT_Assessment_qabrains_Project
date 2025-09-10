@@ -11,7 +11,8 @@ import java.time.Duration;
 
 public class EcommercePages {
     WebDriver driver;
-    @FindBy(xpath = "//span[text()='E-Commerce Site']")
+//    @FindBy(xpath = "//span[text()='E-Commerce Site']")
+    @FindBy(id = "ecommerce-site")
     WebElement EcommerceSiteMenu;
 
     @FindBy(xpath = "//a[text()='Visit Demo Site']")
@@ -30,6 +31,7 @@ public class EcommercePages {
     }
 
     public void ecommerceSiteLogin() throws InterruptedException {
+        Thread.sleep(2000);
         EcommerceSiteMenu.click();
         Thread.sleep(2000);
         viewDemoSiteLink.click();
